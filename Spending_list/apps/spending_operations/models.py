@@ -2,6 +2,21 @@ from datetime import date, datetime
 from django.db import models
 
 
+class Category(models.Model):
+    name = models.CharField(
+        "Название категории",
+        max_length=64,
+        unique=True
+    )
+
+    class Meta:
+        verbose_name = "Категория"
+        verbose_name_plural = "Категории"
+
+    def __str__(self):
+        return f"{self.name}"
+
+
 class Operation(models.Model):
     name = models.TextField(
         "Наименование операции"
@@ -17,6 +32,14 @@ class Operation(models.Model):
     operation_at = models.DateTimeField(
         "Дата операции",
         default=datetime.now,
+    )
+    category = models.ForeignKey(
+        Category,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+        related_name="operations",
+        verbose_name="Категория операции",
     )
 
     class Meta:
