@@ -19,3 +19,4 @@ media/
 /.idea/misc.xml
 .idea
 /Spending_list/apps/spending_operations/migrations/
+/Spending_list/apps/users/migrations/
