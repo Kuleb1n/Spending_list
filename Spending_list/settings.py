@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'Spending_list.apps.spending_operations',
+    'Spending_list.apps.users',
 ]
 
 MIDDLEWARE = [
