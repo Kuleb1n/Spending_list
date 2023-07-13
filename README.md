@@ -11,6 +11,13 @@ DB_PASSWORD=...
 DB_HOST=...
 DB_PORT=...
 
+## Установить модули:
+
+`install psycopg2`
+`install Pillow`
+`install django-environ`
+`install environ`
+
 Установить зависимости:
 `poetry install`
 
@@ -31,4 +38,4 @@ DB_PORT=...
 
 ## Панель администратора
 
-url  ->  `http://localhost:8000/admin/`
+url ->  `http://localhost:8000/admin/`
