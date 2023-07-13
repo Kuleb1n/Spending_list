@@ -13,6 +13,15 @@ class User(AbstractUser):
             "unique": gettext_lazy("A user with that email already exists."),
         },
     )
+    is_active = models.BooleanField(
+        gettext_lazy("Active"),
+        default=False,
+        help_text=gettext_lazy(
+            "Indicates whether this user should be considered active."
+            "(Is the account verified?)"
+        ),
+    )
+    image = models.ImageField('Image URL', blank=True, upload_to='Photo/users/%Y/%m/%d/')
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username"]
