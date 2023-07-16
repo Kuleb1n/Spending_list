@@ -21,7 +21,7 @@ class User(AbstractUser):
             "(Is the account verified?)"
         ),
     )
-    image = models.ImageField('Image URL', blank=True, upload_to='Photo/users/%Y/%m/%d/')
+    image = models.ImageField('Image URL', blank=True, upload_to='users/%Y/%m/%d/')
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username"]
