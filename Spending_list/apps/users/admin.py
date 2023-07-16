@@ -20,6 +20,5 @@ class UserAdmin(admin.ModelAdmin):
         if object.image:
             return mark_safe(f"<img src='{object.image.url}' width=80 alt='?'")
         else:
-            return mark_safe("<img src='Photo/default/default_user_image.svg' width=80 alt='?'")
-
+            return mark_safe("<img src='/media/default/default_user_image.svg' width=80 alt='?'")
     get_photo.short_description = "user_photo"
