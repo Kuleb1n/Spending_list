@@ -6,6 +6,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('Spending_list.apps.spending_operations.urls')),
+    path('', include('Spending_list.apps.users.urls')),
 ]
 
 if settings.DEBUG:
