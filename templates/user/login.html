@@ -13,30 +13,43 @@
 {% block body %}
     <div class="main">
         <input type="checkbox" id="chk" aria-hidden="true">
+        {% if form.errors or messages %}
+            {% if messages %}
+                {% for message in messages %}
+                     <div class="message">{{ message }}</div>
+                {% endfor %}
+            {% else %}
+                <div class="form-error">The data is not correct</div>
+            {% endif %}
+        {% endif %}
         <div class="login">
-            <form method="post">
+            <form method="post" action="{% url 'login' %}">
                 {% csrf_token %}
                 <div class="form-error">{{ form.non_field_errors }}</div>
                 <label for="chk" aria-hidden="true">Login</label>
                 <input type="text" name="username" autofocus="" autocapitalize="none" autocomplete="username"
                        maxlength="254" id="id_username" placeholder="Email" required="">
-                <div class="form-error">{{ form.username.errors }}</div>
                 <input type="password" name="password" autocomplete="current-password" id="id_password"
                        placeholder="Password" required="">
-                <div class="form-error">{{ form.password.errors }}</div>
-                <button type="submit">ENTER</button>
+                <button type="submit">Enter</button>
             </form>
         </div>
-
-        {#        <div class="register">#}
-        {#            <form>#}
-        {#                <label for="chk" aria-hidden="true">Registration</label>#}
-        {#                <input type="email" name="email" placeholder="Email" required="">#}
-        {#                <input type="username" name="username" placeholder="Username" required="">#}
-        {#                <input type="password" name="pswd" placeholder="Password" required="">#}
-        {#                <input type="password" name="pswd" placeholder="Password" required="">#}
-        {#                <button type="submit">Sign up</button>#}
-        {#            </form>#}
-        {#        </div>#}
+        <div class="register">
+            <form method="post" action="{% url 'register' %}">
+                {% csrf_token %}
+                <label for="chk" aria-hidden="true">Registration</label>
+                <input type="email" name="email" placeholder="Email" maxlength="254" required="" id="id_email">
+                <div class="form-error">{{ form.email.errors }}</div>
+                <input type="text" name="username" placeholder="Username" required="" maxlength="150" id="id_username">
+                <div class="form-error">{{ form.username.errors }}</div>
+                <input type="password" name="password1" placeholder="Password" maxlength="128" required=""
+                       id="id_password">
+                <div class="form-error">{{ form.password1.errors }}</div>
+                <input type="password" name="password2" placeholder="Repeat password" maxlength="128" required=""
+                       id="id_password">
+                <div class="form-error">{{ form.password2.errors }}</div>
+                <button type="submit">Sign up</button>
+            </form>
+        </div>
     </div>
 {% endblock %}
