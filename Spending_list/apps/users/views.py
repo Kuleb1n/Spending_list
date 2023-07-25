@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
 from Spending_list.apps.users.models import User
-from apps.users.forms import RegisterUserForm
+from Spending_list.apps.users.forms import RegisterUserForm
 
 
 class LoginUserView(LoginView):
