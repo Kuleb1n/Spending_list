@@ -14,13 +14,18 @@ class LoginUserView(LoginView):
     def get_redirect_url(self):
         return reverse_lazy('main-page')
 
+    def form_valid(self, form):
+        if form.get_user().is_active:
+            return super(LoginUserView, self).form_valid(form)
+
 
 class RegisterUserView(SuccessMessageMixin, CreateView):
     model = User
     template_name = 'user/login.html'
     form_class = RegisterUserForm
     success_url = reverse_lazy('login')
-    success_message = 'You have successfully registered!'
+    success_message = 'You have successfully registered!\n' \
+                      'Confirm the email address for authorization!'
 
 
 class EmailConfirmationView(TemplateView):
