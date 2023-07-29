@@ -1,10 +1,26 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'user/css/login.css' %}">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
+{% endblock %}
 
 {% block title %}
 Email Confirmation
 {% endblock %}
 
 {% block body %}
-<h1>Запись подтверждена!</h1>
-<h2>Авторизуйтесь на сайте <a href="{% url 'login' %}">Login</a></h2>
+<div class="main">
+    <h1 style="color:rgb(238,130,238)">
+        Запись подтверждена!
+    </h1>
+    <br>
+    <br>
+    <a href="{% url 'login' %}" style="color:rgb(238,130,238)">
+        <button>
+            Login
+        </button>
+    </a>
+</div>
 {% endblock %}
