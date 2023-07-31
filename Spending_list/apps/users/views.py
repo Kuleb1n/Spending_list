@@ -1,6 +1,8 @@
+from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, TemplateView
 
@@ -37,3 +39,8 @@ class EmailConfirmationView(TemplateView):
             return super(EmailConfirmationView, self).get(request, *args, **kwargs)
         else:
             return HttpResponseRedirect(reverse('main-page'))
+
+
+def user_logout(request):
+    logout(request)
+    return redirect('login')
