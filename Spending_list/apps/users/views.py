@@ -14,10 +14,6 @@ class LoginUserView(LoginView):
     def get_redirect_url(self):
         return reverse_lazy('main-page')
 
-    def form_valid(self, form):
-        if form.get_user().is_active:
-            return super(LoginUserView, self).form_valid(form)
-
 
 class RegisterUserView(SuccessMessageMixin, CreateView):
     model = User
