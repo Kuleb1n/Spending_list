@@ -1,6 +1,8 @@
 from datetime import date, datetime
 from django.db import models
 
+from Spending_list.apps.spending_operations.managers import GoalManager, GoalType
+
 
 class Category(models.Model):
     name = models.CharField(
@@ -48,21 +50,6 @@ class Operation(models.Model):
 
     def __str__(self):
         return f"At-{self.operation_at}-{self.name}"
-
-
-class GoalType(models.TextChoices):
-    """Тип цели"""
-
-    SPENDING = "Трата"
-    REFILL = "Пополнение"
-
-
-class GoalManager(models.Manager):
-    def goals(self):
-        return self.filter(goal_type=GoalType.REFILL)
-
-    def budgets(self):
-        return self.filter(goal_type=GoalType.SPENDING)
 
 
 class Goal(models.Model):
