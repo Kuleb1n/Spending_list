@@ -16,10 +16,10 @@
         {% if form.errors or messages %}
             {% if messages %}
                 {% for message in messages %}
-                     <div class="message">{{ message }}</div>
+                     <div class="message">
+                         {{ message }}
+                     </div>
                 {% endfor %}
-            {% else %}
-                <div class="form-error">The data is not correct</div>
             {% endif %}
         {% endif %}
         <div class="login">
