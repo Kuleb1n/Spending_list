@@ -7,11 +7,12 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, TemplateView
 
 from Spending_list.apps.users.models import User
-from Spending_list.apps.users.forms import RegisterUserForm, EmailConfirmation
+from Spending_list.apps.users.forms import RegisterUserForm, EmailConfirmation, UserAuthenticationForm
 
 
 class LoginUserView(LoginView):
     template_name = 'user/login.html'
+    form_class = UserAuthenticationForm
 
     def get_redirect_url(self):
         return reverse_lazy('main-page')
