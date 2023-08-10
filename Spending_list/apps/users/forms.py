@@ -9,6 +9,14 @@ from Spending_list.apps.users.models import User, EmailConfirmation
 
 
 class UserAuthenticationForm(AuthenticationForm):
+    error_messages = {
+        "invalid_login":
+            "Please enter a correct email and password. Note that both "
+            "fields may be case-sensitive.",
+        "inactive": "This account is inactive."
+                    "Go to your email address provided during registration and confirm your account to log in.",
+        "invalid_data": "The data entered in the form fields is incorrect.",
+    }
 
     def __init__(self, request, *args, **kwargs):
         super().__init__(request, *args, **kwargs)
@@ -28,8 +36,11 @@ class UserAuthenticationForm(AuthenticationForm):
                 else:
                     raise self.get_invalid_login_error()
 
-            else:
-                self.get_invalid_login_error()
+            elif not self.user_cache:
+                raise ValidationError(
+                    self.error_messages["invalid_data"],
+                    code="invalid_data",
+                )
 
         return self.cleaned_data
 
