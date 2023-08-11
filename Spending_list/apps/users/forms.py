@@ -8,13 +8,21 @@ from django.utils.timezone import now
 from Spending_list.apps.users.models import User, EmailConfirmation
 
 
+def create_link_and_date():
+    """A function that returns the code and the
+    expiration date of the code for the email"""
+
+    return uuid.uuid4(), now() + datetime.timedelta(days=2)
+
+
 class UserAuthenticationForm(AuthenticationForm):
     error_messages = {
         "invalid_login":
             "Please enter a correct email and password. Note that both "
             "fields may be case-sensitive.",
         "inactive": "This account is inactive."
-                    "Go to your email address provided during registration and confirm your account to log in.",
+                    "Go to your email address provided during registration and"
+                    " confirm your account to log in (Check the spam folder).",
         "invalid_data": "The data entered in the form fields is incorrect.",
     }
 
@@ -32,6 +40,12 @@ class UserAuthenticationForm(AuthenticationForm):
             if len(User.objects.filter(email=email)) == 1 and not self.user_cache:
                 user = User.objects.get(email=email)
                 if user.is_active in (False,):
+                    user_email_confirmation = EmailConfirmation.objects.get(user_id=user.pk)
+                    if now() > user_email_confirmation.expiration_of_time:
+                        user_email_confirmation.link, user_email_confirmation.expiration_of_time = (
+                            create_link_and_date())
+                        user_email_confirmation.save()
+                        user_email_confirmation.sending_confirmation_by_email()
                     self.confirm_login_allowed(self.user_cache)
                 else:
                     raise self.get_invalid_login_error()
@@ -58,8 +72,7 @@ class RegisterUserForm(UserCreationForm):
 
     def save(self, commit=True):
         user = super(RegisterUserForm, self).save(commit=True)
-        link = uuid.uuid4()
-        expiration_of_time = now() + datetime.timedelta(days=2)
+        link, expiration_of_time = create_link_and_date()
         email_confirmation = EmailConfirmation.objects.create(
             link=link,
             user=user,
