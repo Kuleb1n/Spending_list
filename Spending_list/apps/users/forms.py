@@ -1,8 +1,10 @@
 import datetime
 import uuid
+from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.core.exceptions import ValidationError
+from django.forms import EmailField
 from django.utils.timezone import now
 
 from Spending_list.apps.users.models import User, EmailConfirmation
@@ -16,6 +18,8 @@ def create_link_and_date():
 
 
 class UserAuthenticationForm(AuthenticationForm):
+    username = EmailField(widget=forms.EmailInput(attrs={"autofocus": True}))
+
     error_messages = {
         "invalid_login":
             "Please enter a correct email and password. Note that both "
@@ -50,11 +54,11 @@ class UserAuthenticationForm(AuthenticationForm):
                 else:
                     raise self.get_invalid_login_error()
 
-            elif not self.user_cache:
-                raise ValidationError(
-                    self.error_messages["invalid_data"],
-                    code="invalid_data",
-                )
+        else:
+            raise ValidationError(
+                self.error_messages["invalid_data"],
+                code="invalid_data",
+            )
 
         return self.cleaned_data
 
