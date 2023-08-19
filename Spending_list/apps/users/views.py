@@ -1,7 +1,7 @@
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
 from django.contrib.messages.views import SuccessMessageMixin
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, TemplateView
@@ -45,3 +45,12 @@ class EmailConfirmationView(TemplateView):
 def user_logout(request):
     logout(request)
     return redirect('login')
+
+
+def validate_username(request):
+    """Checking the availability of the username"""
+    username = request.GET.get('username', None)
+    response = {
+        'is_taken': User.objects.filter(username__iexact=username).exists()
+    }
+    return JsonResponse(response)
