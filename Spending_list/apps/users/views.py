@@ -48,9 +48,18 @@ def user_logout(request):
 
 
 def validate_username(request):
-    """Checking the availability of the username"""
+    """Checking the uniqueness of the username during registration"""
     username = request.GET.get('username', None)
     response = {
-        'is_taken': User.objects.filter(username__iexact=username).exists()
+        'is_username': User.objects.filter(username__iexact=username).exists()
+    }
+    return JsonResponse(response)
+
+
+def validate_email(request):
+    """Checking the uniqueness of the email during registration"""
+    email = request.GET.get('email', None)
+    response = {
+        'is_email': User.objects.filter(email=email).exists()
     }
     return JsonResponse(response)
