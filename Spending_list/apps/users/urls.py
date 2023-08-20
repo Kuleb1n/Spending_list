@@ -8,4 +8,5 @@ urlpatterns = (
     path('logout/', user_logout, name='logout'),
     path('email-confirmation/<str:email>/<uuid:link>/', EmailConfirmationView.as_view(), name='email-confirmation'),
     path('validate_username', validate_username, name='validate_username'),
+    path('validate_email', validate_email, name='validate_email'),
 )
