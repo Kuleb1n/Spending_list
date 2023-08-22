@@ -32,8 +32,9 @@ Sign-up
             <label for="chk" aria-hidden="true">
                 Login
             </label>
-            <input type="email" name="username" autofocus=""
+            <input type="email" name="email" autofocus=""
                    maxlength="254" id="id_username1" placeholder="Email" required="">
+                   <div id="validate_email1" class="valid"></div>
             <input type="password" name="password" autocomplete="current-password" id="id_password"
                    placeholder="Password" required="">
             <button type="submit">
@@ -120,6 +121,31 @@ Sign-up
             });
         return false;
         });
+        $('#id_username1').keyup(function () {
+            $.ajax({
+                data: $(this).serialize(),
+            url: "{% url 'validate_email' %}",
+            success: function (response) {
+                if (response.re_email == false) {
+                    $('#id_username1').removeClass('is-valid').addClass('is-invalid');
+                    if (document.querySelector('#validate_email1').className == 'valid'){
+                        $('#validate_email1').append("Enter the correct email address!").css(
+                        {'color': 'red', 'text-align': 'center',});
+                        $('#validate_email1').removeClass('valid').addClass('invalid');
+                    }
+                }
+                else {
+                    $('#id_username1').removeClass('is-invalid').addClass('is-valid');
+                    $('#validate_email1').empty();
+                    $('#validate_email1').removeClass('invalid').addClass('valid');
+                }
+            },
+            error: function (response) {
+                console.log(response.responseJSON.errors)
+            }
+        });
+        return false;
     });
+});
 </script>
 {% endblock %}
