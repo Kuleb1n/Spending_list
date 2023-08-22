@@ -49,12 +49,12 @@ Sign-up
                 Registration
             </label>
             <input type="email" name="email" placeholder="Email" maxlength="254" required="" id="id_email">
-            <div class="validate_email"></div>
+            <div id="validate_email" class="valid"></div>
             <div class="form-error">
                 {{ form.email.errors }}
             </div>
             <input type="text" name="username" placeholder="Username" required="" maxlength="150" id="id_username">
-            <div class="validate_username"></div>
+            <div id="validate_username" class='valid'></div>
             <div class="form-error">
                 {{ form.username.errors }}
             </div>
@@ -83,14 +83,17 @@ Sign-up
         url: "{% url 'validate_username' %}",
         success: function (response) {
             if (response.is_username == true) {
-                $("#btn_register").hide();
                 $('#id_username').removeClass('is-valid').addClass('is-invalid');
-                $('.validate_username').append('Such a username already exists!').css({'color': 'red', 'text-align': 'center'});
+                if (document.querySelector('#validate_username').className == 'valid'){
+                    $('#validate_username').append('Such a username already exists!').css(
+                        {'color': 'red', 'text-align': 'center'});
+                        $('#validate_username').removeClass('valid').addClass('invalid');
+                    }
             }
             else {
                 $('#id_username').removeClass('is-invalid').addClass('is-valid');
-                $('.validate_username').empty();
-                $("#btn_register").show();
+                $('#validate_username').empty();
+                $('#validate_username').removeClass('invalid').addClass('valid');
             }
         },
         error: function (response) {
@@ -105,14 +108,17 @@ Sign-up
             url: "{% url 'validate_email' %}",
             success: function (response) {
                 if (response.is_email == true) {
-                    $("#btn_register").hide();
                     $('#id_email').removeClass('is-valid').addClass('is-invalid');
-                    $('.validate_email').append("Such a email already exists!").css({'color': 'red', 'text-align': 'center'});
+                    if (document.querySelector('#validate_email').className == 'valid') {
+                    $('#validate_email').append("Such a email already exists!").css(
+                        {'color': 'red', 'text-align': 'center'});
+                        $('#validate_email').removeClass('valid').addClass('invalid');
+                    }
                 }
                 else{
                     $('#id_email').removeClass('is-invalid').addClass('is-valid');
-                    $('.validate_email').empty();
-                    $("#btn_register").show();
+                    $('#validate_email').empty();
+                    $('#validate_email').removeClass('invalid').addClass('valid');
                 }
             },
             error: function (response) {
