@@ -1,3 +1,5 @@
+import re
+
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
 from django.contrib.messages.views import SuccessMessageMixin
@@ -57,9 +59,14 @@ def validate_username(request):
 
 
 def validate_email(request):
-    """Checking the uniqueness of the email during registration"""
+
+    """Checking the uniqueness of the email address and its correctness"""
+
     email = request.GET.get('email', None)
+    email_address_pattern = r"^[-\w\.]+@([-\w]+\.)+[-\w]{2,4}$"
     response = {
-        'is_email': User.objects.filter(email=email).exists()
+        'is_email': User.objects.filter(email=email).exists(),
+        're_email': True if re.match(email_address_pattern, email) is not None else False,
     }
+
     return JsonResponse(response)
