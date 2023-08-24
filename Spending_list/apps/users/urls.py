@@ -9,4 +9,5 @@ urlpatterns = (
     path('email-confirmation/<str:email>/<uuid:link>/', EmailConfirmationView.as_view(), name='email-confirmation'),
     path('validate_username', validate_username, name='validate_username'),
     path('validate_email', validate_email, name='validate_email'),
+    path('validate_passwords', validate_passwords, name='validate_passwords'),
 )
