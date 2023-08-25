@@ -59,7 +59,6 @@ def validate_username(request):
 
 
 def validate_email(request):
-
     """Checking the uniqueness of the email address and its correctness"""
 
     email = request.GET.get('email', None)
@@ -68,5 +67,28 @@ def validate_email(request):
         'is_email': User.objects.filter(email=email).exists(),
         're_email': True if re.match(email_address_pattern, email) is not None else False,
     }
+
+    return JsonResponse(response)
+
+
+def validate_passwords(request):
+    password1 = request.GET.get('password1', None)
+
+    response = {
+        'length': True if len(password1) >= 8 or len(password1) == 0 else False,
+        'only_numbers': False,
+        'only_letters': False,
+    }
+
+    if len(password1) >= 8:
+        response.update({
+            'only_numbers': True if password1.isdigit() else False,
+            'only_letters': True if password1.isalpha() else False,
+        })
+    else:
+        response.update({
+            'only_numbers': False,
+            'only_letters': False,
+        })
 
     return JsonResponse(response)
