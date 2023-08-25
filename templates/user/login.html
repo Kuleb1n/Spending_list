@@ -65,6 +65,9 @@ Sign-up
             </div>
             <input type="password" name="password2" placeholder="Repeat password" maxlength="128" required=""
                    id="id_password2">
+            <div id="validate_passwords" class="valid"></div>
+            <div id="validate_passwords_only_numbers" class="valid"></div>
+            <div id="validate_passwords_only_letters" class="valid"></div>
             <div class="form-error">
                 {{ form.password2.errors }}
             </div>
@@ -152,6 +155,76 @@ Sign-up
         });
         return false;
     });
+
+
+    $("#id_password1").keyup(function () {
+        $.ajax({
+            data: $(this).serialize(),
+            url: "{% url 'validate_passwords' %}",
+            success: function (response) {
+                if (response.length == false  || response.only_numbers == true || response.only_letters == true) {
+                    
+                    if (response.length == false){
+                        $('#id_password1').removeClass('is-valid').addClass('is-invalid'); 
+                        if (document.querySelector('#validate_passwords').className == 'valid')
+                            {                                                                        
+                                $('#validate_passwords').append("The password must contain at least 8 characters").css(
+                                {'color': 'red', 'text-align': 'center',});
+                                $('#validate_passwords').removeClass('valid').addClass('invalid');
+                            }
+                        }
+                    else {
+                        $('#id_password1').removeClass('is-invalid').addClass('is-valid');
+                        $('#validate_passwords').empty();
+                        $('#validate_passwords').removeClass('invalid').addClass('valid');
+                    }
+
+                    if (response.only_numbers == true){
+                        $('#id_password1').removeClass('is-valid').addClass('is-invalid'); 
+                        if (document.querySelector('#validate_passwords_only_numbers').className == 'valid')
+                            {                                                                        
+                                $('#validate_passwords_only_numbers').append("The password should not consist only of numbers!").css(
+                                {'color': 'red', 'text-align': 'center',});
+                                $('#validate_passwords_only_numbers').removeClass('valid').addClass('invalid');
+                            }
+                        }
+                    else {
+                        $('#id_password1').removeClass('is-invalid').addClass('is-valid');
+                        $('#validate_passwords_only_numbers').empty();
+                        $('#validate_passwords_only_numbers').removeClass('invalid').addClass('valid');
+                    }
+
+                    if (response.only_letters == true){
+                        $('#id_password1').removeClass('is-valid').addClass('is-invalid'); 
+                        if (document.querySelector('#validate_passwords_only_letters').className == 'valid')
+                            {                                                                        
+                                $('#validate_passwords_only_letters').append("The password should not consist only of letters!").css(
+                                {'color': 'red', 'text-align': 'center',});
+                                $('#validate_passwords_only_letters').removeClass('valid').addClass('invalid');
+                            }
+                        }
+                    else {
+                        $('#id_password1').removeClass('is-invalid').addClass('is-valid');
+                        $('#validate_passwords_only_letters').empty();
+                        $('#validate_passwords_only_letters').removeClass('invalid').addClass('valid');
+                    }
+
+                    }
+                else {
+                    $('#id_password1').removeClass('is-invalid').addClass('is-valid');
+                    $('#validate_passwords').empty();
+                    $('#validate_passwords_only_numbers').empty();
+                    $('#validate_passwords_only_letters').empty();
+                    $('#validate_passwords').removeClass('invalid').addClass('valid');
+                }
+            },
+            error: function (response) {
+
+                console.log(response.responseJSON.errors)
+            }
+        });
+            return false;
+        });
 });
 </script>
 {% endblock %}
