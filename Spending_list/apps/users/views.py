@@ -73,11 +73,13 @@ def validate_email(request):
 
 def validate_passwords(request):
     password1 = request.GET.get('password1', None)
+    password2 = request.GET.get('password2', None)
 
     response = {
         'length': True if len(password1) >= 8 or len(password1) == 0 else False,
         'only_numbers': False,
         'only_letters': False,
+        'equal': False,
     }
 
     if len(password1) >= 8:
@@ -90,5 +92,17 @@ def validate_passwords(request):
             'only_numbers': False,
             'only_letters': False,
         })
+
+    if password2 is not None:
+        if len(password1) <= len(password2):
+            response.update({
+                'equal': True if password1 != password2 else False
+            })
+        else:
+            response.update(
+                {
+                    'equal': False,
+                }
+            )
 
     return JsonResponse(response)
