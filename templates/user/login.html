@@ -59,7 +59,7 @@ Sign-up
                 {{ form.username.errors }}
             </div>
             <input type="password" name="password1" placeholder="Password" maxlength="128" required=""
-                   id="id_password1">
+                   id="id_password1" value=''>
             <div class="form-error">
                 {{ form.password1.errors }}
             </div>
@@ -68,6 +68,7 @@ Sign-up
             <div id="validate_passwords" class="valid"></div>
             <div id="validate_passwords_only_numbers" class="valid"></div>
             <div id="validate_passwords_only_letters" class="valid"></div>
+            <div id="validation_for_password_equality" class="valid"></div>
             <div class="form-error">
                 {{ form.password2.errors }}
             </div>
@@ -163,7 +164,7 @@ Sign-up
             url: "{% url 'validate_passwords' %}",
             success: function (response) {
                 if (response.length == false  || response.only_numbers == true || response.only_letters == true) {
-                    
+
                     if (response.length == false){
                         $('#id_password1').removeClass('is-valid').addClass('is-invalid'); 
                         if (document.querySelector('#validate_passwords').className == 'valid')
@@ -209,7 +210,7 @@ Sign-up
                         $('#validate_passwords_only_letters').removeClass('invalid').addClass('valid');
                     }
 
-                    }
+                }
                 else {
                     $('#id_password1').removeClass('is-invalid').addClass('is-valid');
                     $('#validate_passwords').empty();
@@ -224,6 +225,33 @@ Sign-up
             }
         });
             return false;
+        });
+
+        $('#id_password2').keyup(function (){
+            $.ajax({
+                data: {"password1": $('#id_password1').val(), "password2":$('#id_password2').val()},
+                url: "{% url 'validate_passwords' %}",
+                success: function (response) {
+                    if (response.equal == true){
+                        $('#id_password2').removeClass('is-valid').addClass('is-invalid'); 
+                        if (document.querySelector('#validation_for_password_equality').className == 'valid')
+                            {                                                                        
+                                $('#validation_for_password_equality').append("Passwords don't match!").css(
+                                {'color': 'red', 'text-align': 'center',});
+                                $('#validation_for_password_equality').removeClass('valid').addClass('invalid');
+                            }
+                        }
+                    else {
+                        $('#id_password2').removeClass('is-invalid').addClass('is-valid');
+                        $('#validation_for_password_equality').empty();
+                        $('#validation_for_password_equality').removeClass('invalid').addClass('valid');
+                    }
+                },
+                error: function(response) {
+                    console.log(response.responseJSON.errors)
+                }
+            });
+        return false;
         });
 });
 </script>
