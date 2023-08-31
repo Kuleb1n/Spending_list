@@ -28,6 +28,7 @@ class UserAuthenticationForm(AuthenticationForm):
                     "Go to your email address provided during registration and"
                     " confirm your account to log in (Check the spam folder).",
         "invalid_data": "The data entered in the form fields is incorrect.",
+        "not_registered": "Such a user is not registered in the system",
     }
 
     def __init__(self, request, *args, **kwargs):
@@ -53,7 +54,11 @@ class UserAuthenticationForm(AuthenticationForm):
                     self.confirm_login_allowed(self.user_cache)
                 else:
                     raise self.get_invalid_login_error()
-
+            elif len(User.objects.filter(email=email)) == 0:
+                raise ValidationError(
+                    self.error_messages["not_registered"],
+                    code="not_registered",
+                )
         else:
             raise ValidationError(
                 self.error_messages["invalid_data"],
