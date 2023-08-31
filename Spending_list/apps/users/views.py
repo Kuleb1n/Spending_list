@@ -61,7 +61,7 @@ def validate_username(request):
 def validate_email(request):
     """Checking the uniqueness of the email address and its correctness"""
 
-    email = request.GET.get('email', None)
+    email = request.GET.get('username', None)
     email_address_pattern = r"^[-\w\.]+@([-\w]+\.)+[-\w]{2,4}$"
     response = {
         'is_email': User.objects.filter(email=email).exists(),
