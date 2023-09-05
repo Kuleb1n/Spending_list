@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
     'Spending_list.apps.spending_operations',
     'Spending_list.apps.users',
+    'Spending_list.apps.support_chat',
 ]
 
 MIDDLEWARE = [
