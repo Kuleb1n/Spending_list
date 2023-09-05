@@ -20,6 +20,7 @@ media/
 .idea
 /Spending_list/apps/spending_operations/migrations/
 /Spending_list/apps/users/migrations/
+/Spending_list/apps/support_chat/migrations/
 
 
 # Ignoring user images
